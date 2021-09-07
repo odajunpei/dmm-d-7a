@@ -1,0 +1,46 @@
+
+<p id="notice"><%= notice %></p>
+<div class="container px5 px-sm-0">
+  <div id="error_explanation">
+     <% if @book.errors.any? %>
+    <h3><%= @book.errors.count %>errors prohibited this obj from being saved:</h3>
+    <% @book.errors.full_messages.each do |message| %>
+    <p>・<%= message %></p>
+    <% end %>
+    <% end %>
+    </div>
+    <div class="row">
+        <div class= "col-md-3">
+            <p><%= render 'users/info', user: @user %></p>
+            <p><%= render 'books/list', book: @book %></P>
+        </div>
+        <div class="col-md-8 offset-md-1">
+          <p></p>
+          <h2>Books</h2>
+          <table class="table table-hover table-inverse">
+            <thread>
+              <tr>
+                <th></th>
+                <th>Title</th>
+                <th>Opinion</th>
+                <th colspan="3"></th>
+              </tr>
+            </thread>
+            <tbody>
+      <% @books.each do |books| %>
+              <tr>
+                <td>
+                  <%= link_to user_path(books.user) do %>
+                    <%= attachment_image_tag books.user, :profile_image, size:"40x40", fallback: "no_image.jpg" %>
+                  <% end %>
+                </td>
+                <td><%=link_to books.title, book_path(books) %></td>
+                <td><%= books.body %></td>
+                <td><%= link_to "コメント数:#{books.book_comments.count}", book_path(books.id) %></td>
+              </tr>
+      <% end %>
+            </tbody>
+          </table>
+      </div>
+    </div>
+  </div>

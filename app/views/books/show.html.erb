@@ -1,0 +1,53 @@
+<p id="notice"><%= notice %></p>
+<div class="container px5 px-sm-0">
+  <div id="error_explanation">
+     <% if @book.errors.any? %>
+    <h3><%= @book.errors.count %>errors prohibited this obj from being saved:</h3>
+    <% @book.errors.full_messages.each do |message| %>
+    <p>・<%= message %></p>
+    <% end %>
+    <% end %>
+    </div>
+    <div class="row">
+        <div class= "col-md-3">
+            <p><%= render 'users/info', user: @user %></p>
+            <p><%= render 'books/list', book: @book %></P>
+        </div>
+        <div class="col-md-8 offset-md-1">
+          <p></p>
+          <h2>Book detail</h2>
+          <table class="table table-hover table-inverse">
+            <tbody>
+              <tr>
+                <td>
+                  <%= link_to user_path(@user.id) do %>
+                  <%= attachment_image_tag @book_find.user, :profile_image, size:"40x40", fallback: "no_image.jpg" %>
+                  <% end %>
+                  <br><%= link_to @user.name, user_path(@user) %></br>
+                </td>
+                <td><%= link_to @book_find.title, book_path(@book_find.id) %></td>
+                <td><%= @book_find.body %></td>
+                <td id="favorite-btn_<%= @book_find.id %>">
+                  <%= render 'favorites/favorite-btn', book: @book_find %>
+                </td>
+                <td>コメント件数:<%= @book_find.book_comments.count %></td>
+                <% if @user.id == current_user.id %>
+                  <td><%= link_to "Edit", edit_book_path(@book_find.id) %></td>
+                  <td><%= link_to "Destroy", book_path(@book_find.id), method: :delete, "data-confirm" => "Are you sure?" %></td>
+                <% end %>
+              </tr>
+            </tbody>
+          </table>
+　　　　　<h4><strong>コメント</strong></h4>
+
+          <div id="comments_area">
+            <%= render partial: 'book_comments/comment', locals: { book_comments: @book_comments,user: @user } %>
+          </div>
+          <% if user_signed_in? %>
+          <div id="comments_create">
+            <%= render partial: 'book_comments/form', locals: { book_comment: @book_comment,book: @book_find } %>
+          </div>
+          <% end %>
+        </div>
+    </div>
+  </div>
